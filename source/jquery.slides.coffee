@@ -734,7 +734,7 @@
             
           # If we're on the first or last slides and rollover is off, remove the appropriate arrow
           # Otherwise show both
-          @hideNavArrows() unless @options.rollover
+          @_hideNavArrows() unless @options.rollover
               
           # If touch device setup next slides
           @_setuptouch() if @data.touch
@@ -758,7 +758,7 @@
             
             # If we're on the first or last slides and rollover is off, remove the appropriate arrow
             # Otherwise show both
-            @hideNavArrows() unless @options.rollover
+            @_hideNavArrows() unless @options.rollover
             
             # Set animating to false
             $.data this, "animating", false
@@ -834,7 +834,7 @@
           
           # If we're on the first or last slides and rollover is off, remove the appropriate arrow
           # Otherwise show both
-          @hideNavArrows() unless @options.rollover
+          @_hideNavArrows() unless @options.rollover
 
           # End of the animation, call complete callback
           @options.callback.complete(next + 1)
@@ -860,7 +860,7 @@
           
           # If we're on the first or last slides and rollover is off, remove the appropriate arrow
           # Otherwise show both
-          @hideNavArrows() unless @options.rollover
+          @_hideNavArrows() unless @options.rollover
 
           # End of the animation, call complete callback
           @options.callback.complete(next + 1)

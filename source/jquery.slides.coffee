@@ -749,9 +749,7 @@
             
           # If we're on the first or last slides and rollover is off, remove the appropriate arrow
           # Otherwise show both
-          if not @options.rollover
-            console.log @data
-            # if $.data(this, "current") =
+          @hideNavArrows() unless @options.rollover
               
           # If touch device setup next slides
           @_setuptouch() if @data.touch
@@ -772,7 +770,11 @@
 
             # Set the new slide to the current
             $.data this, "current", next
-
+            
+            # If we're on the first or last slides and rollover is off, remove the appropriate arrow
+            # Otherwise show both
+            @hideNavArrows() unless @options.rollover
+            
             # Set animating to false
             $.data this, "animating", false
 
@@ -844,6 +846,10 @@
 
           # Set the new slide to the current
           $.data this, "current", next
+          
+          # If we're on the first or last slides and rollover is off, remove the appropriate arrow
+          # Otherwise show both
+          @hideNavArrows() unless @options.rollover
 
           # End of the animation, call complete callback
           @options.callback.complete(next + 1)
@@ -866,10 +872,32 @@
 
           # Set the new slide to the current
           $.data this, "current", next
+          
+          # If we're on the first or last slides and rollover is off, remove the appropriate arrow
+          # Otherwise show both
+          @hideNavArrows() unless @options.rollover
 
           # End of the animation, call complete callback
           @options.callback.complete(next + 1)
         )
+        
+  # @_hideNavArrows()
+  # Hides the nav arrows if we're on the first or last slide & shows them otherwise
+  Plugin::_hideNavArrows = () ->
+    $element = $(@element)
+    
+    leftArrow = $(".slidesjs-previous", $element)
+    rightArrow = $(".slidesjs-next", $element)
+    
+    if @data.current == 0
+      leftArrow.hide()
+      rightArrow.show()
+    else if @data.current == @data.total - 1
+      rightArrow.hide()
+      leftArrow.show()
+    else
+      rightArrow.show()
+      leftArrow.show()  
 
   # @_getVendorPrefix()
   # Check if the browser supports CSS3 Transitions

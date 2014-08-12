@@ -43,6 +43,8 @@
         # next: class="slidesjs-next slidesjs-navigation"
       effect: "slide"
         # [string] Can be either "slide" or "fade".
+      rollover: true
+        # [boolean] "Next" on final slide goes back to first
     pagination:
         # Pagination settings
       active: true
@@ -729,7 +731,13 @@
             display: "none"
             left: 0
             zIndex: 0
-
+            
+          # If we're on the first or last slides and rollover is off, remove the appropriate arrow
+          # Otherwise show both
+          if not @options.rollover
+            console.log @data
+            # if $.data(this, "current") =
+              
           # If touch device setup next slides
           @_setuptouch() if @data.touch
 

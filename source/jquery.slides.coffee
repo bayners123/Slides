@@ -277,6 +277,10 @@
     # Auto play slideshow
     if @options.play.auto
       @play()
+      
+    # If we're on the first or last slides and rollover is off, remove the appropriate arrow
+    # Otherwise show both
+    @_hideNavArrows() unless @options.navigation.rollover
 
     # Slides has loaded
     @options.callback.loaded(@options.start)

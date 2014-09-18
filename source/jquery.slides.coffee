@@ -263,6 +263,14 @@
           # Goto to selected slide
           @goto( ($(e.currentTarget).attr("data-slidesjs-item") * 1) + 1 )
       )
+    
+    # If lazy loading is enabled, give all the images without a src a gray placeholder
+    if @options.lazy
+        # Get all img slides & all first images in div slides
+        $("img.slidesjs-slide, .slidesjs-slide img:first-of-type", $element).each ->
+            
+            if @src == ""
+                @src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
     # Bind update on browser resize
     $(window).bind("resize", () =>
@@ -280,7 +288,7 @@
     @options.callback.loaded(@options.start)
 
   # @_setActive()
-  # Sets the active slide in the pagination
+  # Sets the active slide in the pagination & loads its image if not already loaded
   Plugin::_setActive = (number) ->
     $element = $(@element)
     @data = $.data this
@@ -291,6 +299,28 @@
     # Set active slide in pagination
     $(".active", $element).removeClass "active"
     $(".slidesjs-pagination li:eq(" + current + ") a", $element).addClass "active"
+    
+    # Lazy loading:
+    if @options.lazy
+        
+        # Get the slide's image
+        $slide = $(".slidesjs-control", $element).children().eq(current)
+        $img = if $slide.is("img") then $slide else $slide.find("img:first")
+        
+        if not $img.data("loaded")
+            # Actual src
+            src = $img.data("original")
+            
+            # Create an img element to load the image so that the browser has it in the cache
+            $('<img />')
+                # When this virtual img is loaded, set the slideshow's src to the same so that we see it
+                .one "load.#{@_name}", =>
+                    $img.attr "src", src
+                # Actually do the loading
+                .attr "src", src
+            
+            # Flag as loaded
+            $img.data("loaded", true)
 
   # @_zoom()
   # Resizes the children images of the slider so that they fill the slider without being distorted

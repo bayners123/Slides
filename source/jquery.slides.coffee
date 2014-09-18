@@ -86,6 +86,10 @@
         # [function] Called when animation has started
       complete: () ->
         # [function] Called when animation is complete
+    lazy: false
+      # [boolean] Don't load the images until they're needed. To use this, set the
+      #           img element's src as "" or a placeholder, and add the actual src
+      #           as a data-original="..." attribute
 
   class Plugin
     constructor: (@element, options) ->
